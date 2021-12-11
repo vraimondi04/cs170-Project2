@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <fstream> 
+#include <sstream>
 
 using namespace std;
 
@@ -14,7 +16,7 @@ int main() {
   cin >> userAlgorithm; 
 	
   //file variables to read in the small/large datasets; reference cs012 for reading and writing to files in c++
-	ifstream fin; 
+  ifstream fin; 
   fin.open(fileName);
 
   //safety net if file cannot be opened; end program
@@ -52,5 +54,19 @@ int main() {
   } 
   
   fin.close(); 
+	
+  //rest of output after obtaining dataset from the file
+  numFeatures = trainingSet.size() - 1; 
+  cout << "This dataset has " << numFeatures << " features, alongside " << trainingSet.at(0).size() << " instances." << endl; 
+  cout << "Running nearest neighbor with all " << numFeatures << " features, using \"leaving-one-out\" evaluation, I get an accuracy of "; 
+  cout << crossValidation(trainingSet) << "%" << endl; 
+	
+  if (userAlgorithm == 1) {
+    forwardSelection(trainingSet, numFeatures);
+  }  
+  else if (userAlgorithm == 2) {
+    backwardSelection(trainingSet, numFeatures);
+  } 
+  
   return 0;
 } 
