@@ -7,6 +7,34 @@
 
 using namespace std;
 
+int nearestNeighbor(vector<long double> instance, vector<vector< long double>> subset) { 
+  //first element for each row (the first column is the class of that instance; either 1 or 2)
+  int classVal = instance.at(0); 
+  //minimum distance value out of all of the options in the subset
+  long double minVal = 0;
+
+  //nested for loop traverses the training subset to calculate the minimum distance 
+  for (int i = 0; i < subset.at(0).size(); ++i) { 
+    long double distanceVal = 0.0; 
+
+    for (int j = 1; j < subset.size(); j++) { 
+      //reference the distance function to calculate distance value
+      distanceVal += pow(subset.at(j).at(i) - instance.at(j), 2);
+    } 
+
+    //initial condition for the minimum distance value
+    if (i == 0) {
+      minVal = distanceVal;
+    } 
+    else if (distanceVal < minVal) {
+      minVal = distanceVal; 
+      classVal = subset.at(0).at(i); 
+    }
+  } 
+  //returning the integer value corresponding to which class it belongs to; in our project it will either be 1 or 2
+  return classVal; 
+} 
+
 //reference the accuracy function in the project 2 briefing for this function
 float crossValidation(vector<vector<long double>> trainingSet) { 
   vector<vector<long double>> instanceSubset; 
