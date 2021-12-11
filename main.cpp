@@ -7,6 +7,34 @@
 
 using namespace std;
 
+//reference the accuracy function in the project 2 briefing for this function
+float crossValidation(vector<vector<long double>> trainingSet) { 
+  vector<vector<long double>> instanceSubset; 
+  vector<long double> currInstance; 
+  float numCorrect = 0;
+
+  //traversing the different options for the current subset of the data
+  for (int i = 0; i < trainingSet.at(0).size(); ++i) { 
+    for (int j = 0; j < trainingSet.size(); ++j) {
+
+      //copy all possible features to combine with the latest subset and compare it with the current instance
+      vector<long double> tempFeature = trainingSet.at(j); 
+
+      currInstance.push_back(tempFeature.at(i));
+      tempFeature.erase(tempFeature.begin() + i);
+      instanceSubset.push_back(tempFeature); 
+    }
+    //referenced Project 2_full_briefing.pptx slide 39
+    if (nearestNeighbor(currInstance, instanceSubset) == currInstance.at(0)) {
+      ++numCorrect; 
+    }
+    instanceSubset.clear(); 
+    currInstance.clear();
+  } 
+  //float divided by long double returns as a float value; returning this as a percent value
+  return (numCorrect / trainingSet.at(0).size()) * 100; 
+} 
+
 void forwardSelection(vector<vector<long double>> trainingSet, int numFeatures) { 
   //vector of features with highest accuracy; our final answer
   vector<int> bestFeatures;
