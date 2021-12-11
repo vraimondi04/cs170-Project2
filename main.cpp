@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -22,5 +23,34 @@ int main() {
     return -1; 
   }
   
+  //vectors to store the set of data from the file
+  vector<vector<long double>> trainingSet; 
+  vector<long double> featureList;
+  string row; 
+  string feature;
+  int numFeatures;
+    
+  getline(fin, row); 
+  stringstream sstream(row); 
+
+  //while there are still features to grab from the current row
+  while (sstream >> feature) { 
+    featureList.push_back(stold(feature)); //string to long double; std::stold
+    trainingSet.push_back(featureList); 
+    featureList.clear(); 
+  } 
+
+  //while there are still rows in the file to get features from (while there are still instances left)
+  while (getline(fin, row)) { 
+    stringstream sstream(row); 
+    
+    for (int i = 0; i < trainingSet.size(); i++) { 
+      if (sstream >> feature) {
+        trainingSet.at(i).push_back(stold(feature)); //string to long double; std::stold
+      }  
+    } 
+  } 
+  
+  fin.close(); 
   return 0;
 } 
